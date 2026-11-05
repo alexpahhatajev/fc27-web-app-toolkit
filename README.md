@@ -1,5 +1,3 @@
-<img src="icons/icon-128.png" alt="" width="96" height="96">
-
 # FC 27 Web App Toolkit
 
 A Chrome extension that adds tools to the [EA SPORTS FC 27 Ultimate Team Web App](https://www.ea.com/ea-sports-fc/ultimate-team/web-app/).
@@ -90,8 +88,9 @@ Every player card shows, on its right edge, in the card's own colors:
 
 ### Keyboard shortcuts
 
-Open **Shortcuts** in the left menu to see and change the keys (letters and digits). Keys do nothing while you
-type in a field.
+You can always check the current keys in **Shortcuts** in the left menu. The window lists every shortcut with its key,
+lets you change a key (letters and digits) and restores the defaults below. Keys do nothing while you type in a
+field.
 
 | Key | Action | Where |
 |---|---|---|
