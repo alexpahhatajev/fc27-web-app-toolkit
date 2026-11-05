@@ -1,0 +1,772 @@
+/* Hide EA's top bar with the FC 27 and EA SPORTS logos; the app reserves 48px for it. */
+.fc-header-view {
+  display: none !important;
+}
+
+.with-fifa-header .ut-root-view {
+  height: 100% !important;
+}
+
+/* The app bottom-aligns coins and FC Points; center the whole row on the bar's middle,
+   48px high like the club info, so the stats and the currencies share one center line. */
+.view-navbar-currency {
+  height: 48px;
+  align-items: center;
+}
+
+.view-navbar-currency > :not(#fc27-match-stats) {
+  align-self: center !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+#fc27-match-stats {
+  display: flex;
+  gap: 10px;
+  /* Same divider as the app uses before the club info. */
+  margin-right: 12px;
+  padding-right: 12px;
+  border-right: 1px solid rgba(222, 222, 216, 0.15);
+  align-self: stretch;
+  align-items: center;
+  font-size: 0.8em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#fc27-match-stats.is-loading {
+  opacity: 0.6;
+}
+
+.fc27-match-stats-item {
+  display: flex;
+  flex-direction: column;
+  padding: 2px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  line-height: 1.2;
+}
+
+.fc27-match-stats-total {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+/* Badges before their boxes (match-stats.js): the Rivals division, the last Champions rank and the app's own
+   Squad Battles rank image.
+   The number is text over the drawn shield; a rank that is not known shows the shield greyed out. */
+.fc27-badge {
+  position: relative;
+  flex: 0 0 auto;
+  height: 35px;
+}
+
+.fc27-division {
+  width: 30px;
+}
+
+.fc27-champs {
+  width: 34px;
+}
+
+.fc27-battles {
+  width: 35px;
+}
+
+.fc27-battles img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.fc27-champs.is-empty {
+  filter: grayscale(1);
+  opacity: 0.45;
+}
+
+.fc27-badge svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.fc27-badge-label {
+  position: absolute;
+  top: 2px;
+  left: 0;
+  right: 0;
+  color: #fcfcfc;
+  font-size: 17px;
+  font-weight: 800;
+  line-height: 26px;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.fc27-champs .fc27-badge-label {
+  top: 4px;
+  color: #f3d58a;
+}
+
+/* Wide mode (toggled by wide-mode.js): lift the app's page width caps; popups keep their own sizes. */
+html.fc27-wide .layout-hub,
+html.fc27-wide .ut-content-container .ut-content,
+html.fc27-wide .ut-split-view > .ut-content,
+html.fc27-wide .ut-sbc-hub-view .sbcSetsTiles,
+html.fc27-wide .ut-objective-category--groups,
+html.fc27-wide .ut-tactics-manage-settings-view--content,
+html.fc27-wide .ut-player-health-view--tiles .ut-player-health-stat-view,
+html.fc27-wide .ut-player-health-view--tiles .ut-player-health-tile-view {
+  max-width: none !important;
+}
+
+html.fc27-wide .landscape .layout-hub {
+  padding: 24px !important;
+}
+
+@media (min-width: 1281px) {
+  html.fc27-wide .ut-sbc-set-tile-view.col-1-2-md {
+    flex-basis: calc(33.3333% - 16px) !important;
+    max-width: calc(33.3333% - 16px) !important;
+  }
+
+  html.fc27-wide .ut-split-view {
+    padding: 0 24px !important;
+  }
+
+  /* Same 8px margin above and below as the market search panel, so search and results have one size. */
+  html.fc27-wide .ut-split-view > .ut-content {
+    max-height: calc(100% - 16px) !important;
+  }
+}
+
+/* Squad cards in wide mode: grown around their centers by wide-mode.js, only as far as no cards touch. */
+html.fc27-wide .ut-squad-pitch-view .ut-squad-slot-view {
+  scale: var(--fc27-slot-scale, 1);
+}
+
+html.fc27-wide .ut-squad-pitch-view .ut-squad-slot-view:not(:has(> .player.item)) {
+  transform-origin: 0 0;
+}
+
+/* While a card is pressed or dragged the app gives it position: fixed at screen coordinates; a scaled slot
+   would become its reference box and push it off screen, so the slot is not scaled during a drag. */
+html.fc27-wide .ut-squad-pitch-view .ut-squad-slot-view.drag-in-progress,
+html.fc27-wide .ut-squad-pitch-view .ut-squad-slot-view:has(.isDragging) {
+  scale: none;
+}
+
+/* The dragged card keeps its size: the app places it by its top-left corner, so it grows from there and
+   stays under the pointer. The app ends a drag only on a mouse release over the card itself. */
+html.fc27-wide .ut-squad-pitch-view .ut-squad-slot-view > .player.item.isDragging {
+  scale: var(--fc27-slot-scale, 1);
+  transform-origin: 0 0;
+}
+
+/* Wide mode, Search the Transfer Market: the category tabs become square icon buttons in front of the first field of
+   the search form, and the search panel uses the full height and width. Icons: player, manager (figure with tie),
+   club item (shirt), consumable (card with plus); the tab names stay as hover titles (wide-mode.js).
+   The tab bar stays where the app keeps it in the page and is placed over an empty slot that ::before reserves at
+   the start of the form's first row (4 x 48px buttons + 3 x 8px gaps = 216px, then the form's own 10px gap). */
+html.fc27-wide .ut-market-search-filters-view {
+  position: relative;
+}
+
+html.fc27-wide .ut-market-search-filters-view > .ea-filter-bar-view {
+  position: absolute;
+  z-index: 1;
+  /* content padding 24px + list padding 24px; panel 8px below the top + list padding 24px */
+  top: 32px;
+  left: 48px;
+  width: auto;
+  padding: 0;
+  background: transparent;
+  /* When the form scrolls, the buttons move with it and the part above the form is cut off (wide-mode.js). */
+  transform: translateY(calc(-1px * var(--fc27-form-scroll, 0)));
+  clip-path: inset(calc(1px * var(--fc27-form-scroll, 0)) 0 0 0);
+}
+
+html.fc27-wide .ut-market-search-filters-view .menu-container {
+  width: auto;
+  display: flex;
+  gap: 8px;
+}
+
+html.fc27-wide .ut-market-search-filters-view .ut-item-search-view::before {
+  content: "";
+  flex: 0 0 216px;
+  height: 48px;
+}
+
+/* The first visible field fills the rest of the first row: the player name field, or, where the app hides it
+   (inline display: none), the first dropdown. */
+html.fc27-wide .ut-market-search-filters-view .ut-player-search-control:not([style*="none"]),
+html.fc27-wide .ut-market-search-filters-view .ut-player-search-control[style*="none"] + .ut-search-filter-control {
+  flex: 0 1 calc(100% - 226px);
+}
+
+html.fc27-wide .ut-market-search-filters-view .ea-filter-bar-item-view {
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  font-size: 0;
+  justify-content: center;
+  align-items: center;
+}
+
+html.fc27-wide .ut-market-search-filters-view .ea-filter-bar-item-view::before {
+  content: "";
+  width: 24px;
+  height: 24px;
+  background-color: currentColor;
+  -webkit-mask: var(--fc27-icon) center / 24px 24px no-repeat;
+  mask: var(--fc27-icon) center / 24px 24px no-repeat;
+}
+
+html.fc27-wide .ut-market-search-filters-view .ea-filter-bar-item-view:nth-child(1) {
+  --fc27-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='7' r='4'/%3E%3Cpath d='M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1'/%3E%3C/svg%3E");
+}
+
+html.fc27-wide .ut-market-search-filters-view .ea-filter-bar-item-view:nth-child(2) {
+  --fc27-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='6' r='3.5'/%3E%3Cpath d='M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1'/%3E%3Cpath d='M12 14l-1.5 2 1.5 5 1.5-5z'/%3E%3C/svg%3E");
+}
+
+html.fc27-wide .ut-market-search-filters-view .ea-filter-bar-item-view:nth-child(3) {
+  --fc27-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 3l-5 3 2 5 3-1v11h8V10l3 1 2-5-5-3c-.5 1.7-2 3-4 3s-3.5-1.3-4-3z'/%3E%3C/svg%3E");
+}
+
+html.fc27-wide .ut-market-search-filters-view .ea-filter-bar-item-view:nth-child(4) {
+  --fc27-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='5' y='3' width='14' height='18' rx='2'/%3E%3Cpath d='M12 9v6M9 12h6'/%3E%3C/svg%3E");
+}
+
+html.fc27-wide .ut-market-search-filters-view > .ut-content-container {
+  padding: 0 24px;
+}
+
+html.fc27-wide .ut-market-search-filters-view > .ut-content-container > .ut-content {
+  max-height: calc(100% - 16px) !important;
+}
+
+/* Grid and Wide toggles in the header (wide-mode.js). */
+.fc27-toggle {
+  margin-right: 10px;
+  padding: 2px 8px;
+  font: inherit;
+  font-size: 0.8em;
+  color: inherit;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.fc27-toggle[aria-pressed="true"] {
+  border-color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.12);
+}
+
+/* Grid mode (toggled by wide-mode.js): Club > Players, marked by club-list.js, becomes square cells with only
+   the card, filled row by row; the name, stats and the row arrow are hidden, the panel on the right is
+   unchanged. A page then holds 90 players (club-list.js) and scrolls inside the list. Squad and SBC club
+   searches keep the app's own list. */
+html.fc27-grid .fc27-club-players ul.paginated {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+  align-content: start;
+  gap: 10px;
+  padding: 10px 16px;
+}
+
+html.fc27-grid .fc27-club-players .listFUTItem {
+  margin: 0;
+  aspect-ratio: 1;
+}
+
+html.fc27-grid .fc27-club-players .listFUTItem .rowContent {
+  height: 100%;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+html.fc27-grid .fc27-club-players .listFUTItem .rowContent::before,
+html.fc27-grid .fc27-club-players .listFUTItem .entityContainer > :not(.player),
+html.fc27-grid .fc27-club-players .listFUTItem .auction {
+  display: none;
+}
+
+html.fc27-grid .fc27-club-players .listFUTItem .entityContainer {
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+/* The card element clips its content; cards with our boxes let them reach outside the card. */
+.player.item:has(> .fc27-card-info) {
+  overflow: visible !important;
+}
+
+/* Alternative positions, then skill moves and weak foot in one box (card-info.js), on the right edge of the card
+   and slightly outside it. Fill and text use the card's own colors (--fc27-card-bg / --fc27-card-fg). */
+.fc27-card-info {
+  position: absolute;
+  top: 24%;
+  right: -7%;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  /* Too many boxes for the card height wrap into a second column to the left. */
+  flex-wrap: wrap-reverse;
+  align-content: flex-start;
+  max-height: 72%;
+  align-items: stretch;
+  gap: 2px;
+  font-weight: 700;
+  line-height: 1.3;
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.fc27-card-info span {
+  padding: 0 3px;
+  border: 1px solid var(--fc27-card-fg, #2d2410);
+  border-radius: 3px;
+  color: var(--fc27-card-fg, #2d2410);
+  background: var(--fc27-card-bg, #e1be5d);
+}
+
+/* League (card-info.js): centered on the drawn top edge of the card, which starts about 12% below the
+   element's top. Centered with margins because the app resets transforms on the card's children. */
+.fc27-card-league {
+  position: absolute;
+  top: calc(12% - 0.75em);
+  left: 0;
+  right: 0;
+  z-index: 2;
+  width: max-content;
+  margin: 0 auto;
+  padding: 0 4px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 4px;
+  font-weight: 700;
+  line-height: 1.35;
+  white-space: nowrap;
+  color: #fff;
+  background: #4aa3dc;
+  pointer-events: none;
+}
+
+.small.player.item .fc27-card-info,
+.small.player.item .fc27-card-league {
+  font-size: 7px;
+}
+
+/* Less overhang on small cards, so list rows keep a gap to the player name. */
+.small.player.item .fc27-card-info {
+  right: -5%;
+}
+
+.large.player.item .fc27-card-info,
+.large.player.item .fc27-card-league {
+  font-size: 10px;
+}
+
+/* Lowest BIN box (price-check.js) at the top of the item panel: result centered, price in bold, button below. */
+.fc27-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px 14px;
+  border-bottom: 1px solid rgba(222, 222, 216, 0.15);
+  text-align: center;
+  color: #fcfcfc;
+}
+
+.fc27-price-result {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.fc27-price-result[hidden] {
+  display: none;
+}
+
+.fc27-price-label {
+  font-size: 0.75em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.fc27-price-value {
+  font-size: 1.9em;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.fc27-price-note {
+  font-size: 0.45em;
+  font-weight: 600;
+  opacity: 0.75;
+}
+
+.fc27-price-meta {
+  font-size: 0.85em;
+  opacity: 0.8;
+}
+
+.fc27-price-sell {
+  margin-top: 4px;
+  font-size: 0.95em;
+}
+
+.fc27-price-error {
+  font-size: 0.9em;
+  color: #ff8a80;
+}
+
+.fc27-price button {
+  min-width: 60%;
+  padding: 8px 16px;
+  font: inherit;
+  font-weight: 700;
+  color: #151d29;
+  background: #fcfcfc;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fc27-price button:disabled {
+  color: rgba(252, 252, 252, 0.75);
+  background: rgba(252, 252, 252, 0.12);
+  cursor: default;
+}
+
+/* "Use lowest BIN" button inside List on Transfer Market (price-check.js). */
+/* The heading above already leaves 12px under its text; 12px below centers the button between the two rows. */
+.fc27-fill {
+  width: 100%;
+  margin: 0 0 12px;
+  padding: 10px 12px;
+  font: inherit;
+  font-weight: 700;
+  color: #151d29;
+  background: #fcfcfc;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fc27-fill:disabled {
+  color: rgba(252, 252, 252, 0.7);
+  background: rgba(252, 252, 252, 0.12);
+  cursor: default;
+}
+
+/* "Shortcuts" entry in the left menu (shortcuts.js): a keyboard outline in the menu's own icon size and color.
+   The app orders the menu with CSS order (Club 6, Settings 7). Order 7 places it after Club; Settings stays at the
+   bottom because the entry is inserted before it in the page and Settings is pushed down by its own top margin. */
+.fc27-shortcuts-tab {
+  order: 7;
+}
+
+.fc27-shortcuts-tab::before {
+  content: "";
+  display: block;
+  height: 24px;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'%3E%3Crect x='2' y='6' width='20' height='12' rx='2'/%3E%3Cpath d='M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round'%3E%3Crect x='2' y='6' width='20' height='12' rx='2'/%3E%3Cpath d='M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10'/%3E%3C/svg%3E") center / 24px 24px no-repeat;
+}
+
+/* Shortcuts window opened from the menu entry (shortcuts.js). */
+.fc27-shortcuts-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.fc27-shortcuts-dialog {
+  width: min(440px, calc(100vw - 32px));
+  padding: 20px 22px;
+  color: #fcfcfc;
+  background: #151d29;
+  border: 1px solid rgba(222, 222, 216, 0.15);
+  border-radius: 10px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  font-size: 14px;
+}
+
+.fc27-shortcuts-title {
+  margin-bottom: 4px;
+  font-size: 1.3em;
+  font-weight: 700;
+}
+
+/* Long lists scroll inside the window, which keeps its title and buttons on screen. */
+.fc27-shortcuts-list {
+  max-height: calc(100vh - 220px);
+  overflow-y: auto;
+  margin: 14px 0 6px;
+  border-top: 1px solid rgba(222, 222, 216, 0.15);
+}
+
+.fc27-shortcuts-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(222, 222, 216, 0.15);
+}
+
+.fc27-shortcuts-text {
+  flex: 1;
+}
+
+.fc27-shortcuts-dialog kbd {
+  min-width: 34px;
+  padding: 6px 0;
+  font: inherit;
+  font-size: 1.1em;
+  font-weight: 800;
+  text-align: center;
+  color: #151d29;
+  background: #fcfcfc;
+  border-radius: 5px;
+}
+
+.fc27-shortcuts-dialog kbd.is-waiting {
+  color: #fcfcfc;
+  background: transparent;
+  outline: 2px dashed rgba(252, 252, 252, 0.6);
+}
+
+.fc27-shortcuts-name {
+  font-weight: 700;
+}
+
+.fc27-shortcuts-where {
+  font-size: 0.85em;
+  opacity: 0.7;
+}
+
+.fc27-shortcuts-message {
+  min-height: 1.4em;
+  font-size: 0.9em;
+}
+
+.fc27-shortcuts-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.fc27-shortcuts-dialog button {
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 700;
+  border: 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.fc27-shortcuts-change,
+.fc27-shortcuts-secondary {
+  color: #fcfcfc;
+  background: rgba(252, 252, 252, 0.12);
+}
+
+.fc27-shortcuts-primary {
+  color: #151d29;
+  background: #fcfcfc;
+}
+
+/* Sniper panel above Reset and Search on Search the Transfer Market (sniper.js): one row of settings, then
+   one line of status while there is something to show. */
+.fc27-sniper {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(222, 222, 216, 0.15);
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.fc27-sniper.is-running {
+  border-color: #23badc;
+}
+
+.fc27-sniper-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+}
+
+.fc27-sniper-title {
+  font-weight: 700;
+}
+
+.fc27-sniper-field,
+.fc27-sniper-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.fc27-sniper-field input,
+.fc27-sniper-field select {
+  width: 64px;
+  padding: 4px 8px;
+  color: inherit;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(222, 222, 216, 0.25);
+  border-radius: 4px;
+}
+
+.fc27-sniper-field select {
+  width: auto;
+}
+
+.fc27-sniper-field option {
+  color: #fcfcfc;
+  background: #151d29;
+}
+
+.fc27-sniper-check input {
+  accent-color: #23badc;
+}
+
+.fc27-sniper .fc27-sniper-start {
+  margin-left: auto;
+  min-width: 96px;
+  height: 32px;
+}
+
+.fc27-sniper-status {
+  margin-top: 6px;
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.fc27-sniper-status:empty {
+  display: none;
+}
+
+/* Transfer List: Active Transfers first, the other sections keep their order (Sold, Unsold, Available);
+   every section shows two items per row. */
+.ut-transfer-list-view {
+  display: flex;
+  flex-direction: column;
+}
+
+.ut-transfer-list-view > .ut-sectioned-item-list-view:nth-child(4) {
+  order: -1;
+}
+
+.ut-transfer-list-view .ut-sectioned-item-list-view > ul.itemList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.ut-transfer-list-view .ut-sectioned-item-list-view > ul.itemList > .listFUTItem {
+  margin: 0;
+  min-width: 0;
+}
+
+/* At half width the stats row runs into the prices; the card and the panel on the right still show them. */
+.ut-transfer-list-view .listFUTItem .player-stats-data-component {
+  display: none;
+}
+
+/* Profit on own listings (transfer-list.js): a green or red frame with a soft tint, and the amount as a pill
+   in the row's top right corner. */
+.listFUTItem.fc27-profit-up,
+.listFUTItem.fc27-profit-down {
+  --fc27-profit: #3ccf7e;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 2px var(--fc27-profit);
+  background-image: linear-gradient(90deg, transparent 40%, color-mix(in srgb, var(--fc27-profit) 14%, transparent));
+}
+
+.listFUTItem.fc27-profit-down {
+  --fc27-profit: #ff6b6b;
+}
+
+.listFUTItem .rowContent:has(> .fc27-profit) {
+  position: relative;
+}
+
+.fc27-profit {
+  position: absolute;
+  top: 8px;
+  right: 34px;
+  z-index: 1;
+  padding: 2px 8px;
+  color: #10161f;
+  background: var(--fc27-profit);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 18px;
+  pointer-events: auto;
+}
+
+/* Club > Players: "Sort by BIN" before the app's Search button, and each checked card's lowest Buy Now as a
+   pill on the card (club-sort.js). */
+.fc27-club-players .ut-list-header-action:has(> .fc27-club-sort) {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fc27-club-bin {
+  display: none;
+}
+
+.fc27-club-players .listFUTItem .rowContent:has(> .fc27-club-bin) {
+  position: relative;
+}
+
+.fc27-club-players .fc27-club-bin {
+  display: block;
+  position: absolute;
+  bottom: 6px;
+  left: 50%;
+  z-index: 2;
+  translate: -50% 0;
+  padding: 1px 8px;
+  color: #10161f;
+  background: #f3d58a;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+/* In the app's own row layout the price sits at the right, before the row arrow. */
+html:not(.fc27-grid) .fc27-club-players .fc27-club-bin {
+  top: 50%;
+  bottom: auto;
+  left: auto;
+  right: 44px;
+  translate: 0 -50%;
+}
