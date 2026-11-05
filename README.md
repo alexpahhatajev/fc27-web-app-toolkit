@@ -1,3 +1,5 @@
+<img src="icons/icon-128.png" alt="" width="96" height="96">
+
 # FC 27 Web App Toolkit
 
 A Chrome extension that adds tools to the [EA SPORTS FC 27 Ultimate Team Web App](https://www.ea.com/ea-sports-fc/ultimate-team/web-app/).
