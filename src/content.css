@@ -697,17 +697,34 @@ html.fc27-grid .fc27-club-players .listFUTItem .entityContainer {
 }
 
 /* Profit on own listings (transfer-list.js): a green or red frame with a soft tint, and the amount as a pill
-   in the row's top right corner. */
+   in the row's top right corner. The app paints the row's content box solid on hover and selection, so the
+   tint is on that box and the frame is a layer above it. */
 .listFUTItem.fc27-profit-up,
 .listFUTItem.fc27-profit-down {
   --fc27-profit: #3ccf7e;
+  position: relative;
   border-radius: 8px;
-  box-shadow: inset 0 0 0 2px var(--fc27-profit);
-  background-image: linear-gradient(90deg, transparent 40%, color-mix(in srgb, var(--fc27-profit) 14%, transparent));
 }
 
 .listFUTItem.fc27-profit-down {
   --fc27-profit: #ff6b6b;
+}
+
+.listFUTItem.fc27-profit-up > .rowContent,
+.listFUTItem.fc27-profit-down > .rowContent {
+  border-radius: 8px;
+  background-image: linear-gradient(90deg, transparent 40%, color-mix(in srgb, var(--fc27-profit) 14%, transparent));
+}
+
+.listFUTItem.fc27-profit-up::after,
+.listFUTItem.fc27-profit-down::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: 8px;
+  box-shadow: inset 0 0 0 2px var(--fc27-profit);
+  pointer-events: none;
 }
 
 .listFUTItem .rowContent:has(> .fc27-profit) {
