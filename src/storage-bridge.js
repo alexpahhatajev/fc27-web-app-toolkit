@@ -5,11 +5,15 @@
 //        -> { source: "fc27-ext", id, shortcuts } (key bindings, { [shortcut id]: event.code }).
 //           { source: "fc27-page", id, type: "paid:get" | "paid:merge", paid }
 //        -> { source: "fc27-ext", id, paid } (price paid per item id, { [item id]: coins }).
+//           { source: "fc27-page", id, type: "offmarket:get" | "offmarket:merge", offMarket }
+//        -> { source: "fc27-ext", id, offMarket } (players without any listing, { [player id]: time seen }).
 (() => {
   const HISTORY_KEY = "matchHistory";
   const SHORTCUTS_KEY = "shortcuts";
   const PAID_KEY = "paidPrices";
   const PAID_LIMIT = 1000;
+  const OFF_MARKET_KEY = "offMarket";
+  const OFF_MARKET_DAYS = 7;
 
   async function history(msg) {
     const stored = (await chrome.storage.local.get(HISTORY_KEY))[HISTORY_KEY] || {};
@@ -43,6 +47,17 @@
     return { paid: stored };
   }
 
+  // Players seen without any listing; entries older than OFF_MARKET_DAYS are dropped.
+  async function offMarket(msg) {
+    const stored = (await chrome.storage.local.get(OFF_MARKET_KEY))[OFF_MARKET_KEY] || {};
+    const since = Date.now() - OFF_MARKET_DAYS * 24 * 60 * 60 * 1000;
+    const kept = Object.fromEntries(Object.entries({ ...stored, ...(msg.offMarket || {}) }).filter(([, seen]) => seen > since));
+    if (msg.type === "offmarket:merge" || Object.keys(kept).length !== Object.keys(stored).length) {
+      await chrome.storage.local.set({ [OFF_MARKET_KEY]: kept });
+    }
+    return { offMarket: kept };
+  }
+
   const handlers = {
     "history:get": history,
     "history:merge": history,
@@ -50,6 +65,8 @@
     "shortcuts:set": shortcuts,
     "paid:get": paid,
     "paid:merge": paid,
+    "offmarket:get": offMarket,
+    "offmarket:merge": offMarket,
   };
 
   window.addEventListener("message", async (event) => {

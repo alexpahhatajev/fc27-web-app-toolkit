@@ -596,18 +596,19 @@ html.fc27-grid .fc27-club-players .listFUTItem .entityContainer {
   background: #fcfcfc;
 }
 
-/* Sniper panel above Reset and Search on Search the Transfer Market (sniper.js): one row of settings, then
-   one line of status while there is something to show. */
+/* Sniper panel above Reset and Search on Search the Transfer Market (sniper.js): the Rating row, the Sniper
+   row, then one line of status while there is something to show. */
 .fc27-sniper {
-  margin: 0 0 12px;
-  padding: 8px 12px;
-  border: 1px solid rgba(222, 222, 216, 0.15);
-  border-radius: 8px;
+  margin: 0;
+  padding: 10px 24px;
+  /* The app's own panel color, so the panel joins the form above and the Reset/Search row below. */
+  background: rgb(21, 29, 41);
+  border-top: 1px solid rgba(222, 222, 216, 0.15);
   font-size: 14px;
 }
 
 .fc27-sniper.is-running {
-  border-color: #23badc;
+  border-top-color: #23badc;
 }
 
 .fc27-sniper-row {
@@ -657,6 +658,42 @@ html.fc27-grid .fc27-club-players .listFUTItem .entityContainer {
   margin-left: auto;
   min-width: 96px;
   height: 32px;
+}
+
+.fc27-sniper-row + .fc27-sniper-row {
+  margin-top: 8px;
+}
+
+.fc27-sniper.fc27-rating-off .fc27-rating-row > :not(.fc27-sniper-title):not(.fc27-rating-on) {
+  opacity: 0.45;
+}
+
+.fc27-sniper .fc27-sniper-find {
+  height: 32px;
+  padding: 0 14px;
+  font-size: 14px;
+}
+
+.fc27-rating-field input {
+  width: 56px;
+}
+
+/* Search Results: other sellers' players outside the Rating range (sniper.js), and how many are shown. */
+.SearchResults .listFUTItem.fc27-rating-out {
+  display: none;
+}
+
+.ut-split-view:has(.SearchResults.fc27-rating-empty) > .ut-content > .ui-layout-right {
+  visibility: hidden;
+}
+
+.fc27-rating-note {
+  margin: 0 0 8px;
+  padding: 6px 12px;
+  border: 1px solid rgba(222, 222, 216, 0.15);
+  border-radius: 6px;
+  font-size: 13px;
+  opacity: 0.85;
 }
 
 .fc27-sniper-status {

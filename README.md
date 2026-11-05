@@ -100,9 +100,38 @@ field.
 | Q / W | Buy Now Price Max − / + | Search the Transfer Market |
 | S | Search | Search the Transfer Market |
 | A | Back | Any screen with the back arrow |
-| G | Buy Now the **last** card and confirm | Search results |
-| H | Buy Now the **first** card and confirm | Search results |
+| G | Buy Now the **last** shown card and confirm | Search results |
+| H | Buy Now the **first** shown card and confirm | Search results |
 | ← / → | Previous / next page (fixed keys) | Club > Players |
+
+### Rating filter
+
+EA's transfer market cannot search by rating. The **Rating** row in the panel above Reset and Search on Search
+the Transfer Market filters the listings EA returns instead. It is off until you tick **On**; while off, none of
+the following applies.
+
+| Setting | Meaning |
+|---|---|
+| On | Turns the Rating filter on for searches, the sniper and Find cheapest |
+| Min / Max | Rating range, 40 to 99; empty means no limit (Min 84 and Max 84 = exactly 84) |
+| By player | Searches the players whose card has a rating in the range, one player at a time, in turn |
+| Find cheapest | Finds the lowest Buy Now in the range (up to 8 searches) |
+
+- **Search Results** hides other sellers' players outside the range and says how many of the page are shown.
+  When the selected listing is hidden, the first shown one is selected; when none is shown, the side panel is
+  hidden too.
+- **Gold only:** with a Min of 75 or more and no Quality in the form, searches are Gold only, because bronze and
+  silver cards are never rated that high.
+- **More pages:** when a page has no match, the next page opens by itself, up to 5 more pages (one search each).
+  Turning a page yourself stops this.
+- **Find cheapest** starts at your Buy Now Max (or 1,000), raises the cap until cards in the range appear, then
+  lowers it below the cheapest one until none is left, and reports the lowest price found.
+- **By player** uses the app's player database. Each Search press checks players in turn (up to 10 per press,
+  one search each) and shows the first one with a listing in range. It knows each player's regular card only, so
+  a special card rated higher than the player's own is missed.
+- **Not on market:** a player with no listing in range is searched once more without any limit. With no listing
+  at all, he is saved as not on market for 7 days and skipped by Search and the sniper.
+- The sniper buys only listings in the range, and in By player mode takes the next player with each search.
 
 ### Sniper
 
@@ -126,7 +155,7 @@ A panel above Reset and Search on Search the Transfer Market. It repeats the sea
 
 ## Data and permissions
 
-- `storage`: settings, shortcut keys, match history and paid prices are kept in `chrome.storage.local` on this computer only.
+- `storage`: settings, shortcut keys, match history, paid prices and the players saved as not on market are kept in `chrome.storage.local` on this computer only.
 - `declarativeContent`: greys out the toolbar icon outside the Web App.
 - The scripts run only on `https://www.ea.com/ea-sports-fc/ultimate-team/web-app/*`. Most of them run in the page itself, so they can use the Web App's own services.
 
@@ -145,7 +174,7 @@ A panel above Reset and Search on Search the Transfer Market. It repeats the sea
 | `src/shortcuts.js` | Keyboard shortcuts and the Shortcuts window |
 | `src/club-list.js` | Club > Players grid page size and arrow keys |
 | `src/club-sort.js` | Sort by BIN |
-| `src/sniper.js` | Sniper |
+| `src/sniper.js` | Sniper and the Rating filter |
 | `src/transfer-list.js` | Transfer List profit labels |
 | `icons/` | Toolbar and extension icons |
 
