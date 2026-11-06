@@ -824,3 +824,307 @@ html:not(.fc27-grid) .fc27-club-players .fc27-club-bin {
   right: 44px;
   translate: 0 -50%;
 }
+
+/* Auto fill panel under the requirements of a one-click score SBC (sbc-helper.js), laid out like the
+   requirements section above it: same padding, divider and title. */
+.fc27-sbc-helper {
+  padding: 16px 0;
+  border-bottom: 1px solid rgba(222, 222, 216, 0.15);
+  font-size: 14px;
+}
+
+.fc27-sbc-helper .title {
+  margin: 0 0 12px;
+}
+
+/* The price table: one grid row per rating; numbers right-aligned, the best value row in gold, unticked rows
+   dimmed. The table scrolls when there are many ratings. */
+.fc27-sbc-table {
+  display: flex;
+  flex-direction: column;
+  max-height: 196px;
+  overflow-y: auto;
+  font-size: 12px;
+}
+
+.fc27-sbc-row {
+  display: grid;
+  grid-template-columns: 44px 42px 54px 42px minmax(0, 1fr) 16px;
+  align-items: center;
+  column-gap: 6px;
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(222, 222, 216, 0.08);
+}
+
+.fc27-sbc-row > span:nth-child(n + 2):nth-child(-n + 4) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.fc27-sbc-head {
+  font-size: 11px;
+  opacity: 0.6;
+}
+
+.fc27-sbc-rating {
+  font-weight: 700;
+}
+
+.fc27-sbc-row input[type="number"] {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 2px 6px;
+  color: inherit;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(222, 222, 216, 0.25);
+  border-radius: 4px;
+}
+
+.fc27-sbc-row input[type="checkbox"] {
+  margin: 0;
+  accent-color: #23badc;
+}
+
+.fc27-sbc-row.is-best {
+  color: #f3d58a;
+}
+
+.fc27-sbc-row.is-off > span {
+  opacity: 0.45;
+}
+
+.fc27-sbc-limits {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.fc27-sbc-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+}
+
+.fc27-sbc-field span {
+  white-space: nowrap;
+}
+
+.fc27-sbc-field input {
+  width: 96px;
+  padding: 4px 8px;
+  color: inherit;
+  font: inherit;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(222, 222, 216, 0.25);
+  border-radius: 4px;
+}
+
+.fc27-sbc-helper .fc27-sbc-check-prices {
+  width: 100%;
+  height: 36px;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.fc27-sbc-helper .fc27-sbc-check-prices:disabled {
+  opacity: 0.45;
+}
+
+.fc27-sbc-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.fc27-sbc-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.fc27-sbc-check input {
+  accent-color: #23badc;
+}
+
+.fc27-sbc-buttons {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.fc27-sbc-buttons .btn-standard {
+  flex: 1;
+  height: 36px;
+  font-size: 14px;
+}
+
+.fc27-sbc-buttons .btn-standard:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.fc27-sbc-status {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.4;
+  opacity: 0.85;
+}
+
+.fc27-sbc-status:empty {
+  display: none;
+}
+
+/* Store > Packs > My Packs (store-packs.js): a header tile above the packs, in the packs' own width, color and
+   corners, with the pack count and a filter chip per pack name. */
+.fc27-packs-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 720px;
+  max-width: 100%;
+  box-sizing: border-box;
+  margin: 16px auto 0;
+  padding: 18px 20px;
+  background: rgb(35, 49, 68);
+  border-radius: 16px;
+}
+
+.fc27-packs-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.fc27-packs-count {
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.fc27-packs-label {
+  font-size: 18px;
+}
+
+.fc27-packs-of {
+  font-size: 14px;
+  opacity: 0.6;
+}
+
+.fc27-packs-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fc27-packs-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 8px 7px 14px;
+  color: #fcfcfc;
+  font: inherit;
+  font-size: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(222, 222, 216, 0.2);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.fc27-packs-chip:hover {
+  border-color: rgba(222, 222, 216, 0.5);
+}
+
+.fc27-packs-chip-count {
+  min-width: 22px;
+  padding: 2px 7px;
+  font-size: 12px;
+  font-weight: 700;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+.fc27-packs-chip[aria-pressed="true"] {
+  color: #151d29;
+  background: #fcfcfc;
+  border-color: #fcfcfc;
+}
+
+.fc27-packs-chip[aria-pressed="true"] .fc27-packs-chip-count {
+  color: #fcfcfc;
+  background: #151d29;
+}
+
+.ut-store-pack-details-view.fc27-pack-hidden {
+  display: none;
+}
+
+/* Player locks (player-lock.js): the "Lock for SBC" row in a player's panel, with a lock icon, and a lock badge
+   on locked cards in club lists. */
+.ut-button-group > .fc27-lock-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  column-gap: 10px;
+}
+
+.ut-button-group > .fc27-lock-row::before {
+  content: "";
+  flex: 0 0 18px;
+  height: 18px;
+  background-color: currentColor;
+  -webkit-mask: var(--fc27-lock-open) center / 18px 18px no-repeat;
+  mask: var(--fc27-lock-open) center / 18px 18px no-repeat;
+}
+
+.ut-button-group > .fc27-lock-row.is-locked {
+  color: #f3d58a;
+}
+
+.ut-button-group > .fc27-lock-row.is-locked::before {
+  -webkit-mask-image: var(--fc27-lock-closed);
+  mask-image: var(--fc27-lock-closed);
+}
+
+.ut-button-group > .fc27-lock-row .btn-subtext:not(:empty) {
+  flex-basis: 100%;
+  padding-left: 28px;
+  font-size: 12px;
+  opacity: 0.75;
+}
+
+:root {
+  --fc27-lock-closed: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='11' width='16' height='10' rx='2'/%3E%3Cpath d='M8 11V7a4 4 0 0 1 8 0v4'/%3E%3C/svg%3E");
+  --fc27-lock-open: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='11' width='16' height='10' rx='2'/%3E%3Cpath d='M8 11V7a4 4 0 0 1 7.5-1.9'/%3E%3C/svg%3E");
+}
+
+.listFUTItem .rowContent:has(> .fc27-lock-badge) {
+  position: relative;
+}
+
+.fc27-lock-badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 3;
+  width: 22px;
+  height: 22px;
+  background: #f3d58a;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
+}
+
+.fc27-lock-badge::before {
+  content: "";
+  position: absolute;
+  inset: 4px;
+  background-color: #10161f;
+  -webkit-mask: var(--fc27-lock-closed) center / 14px 14px no-repeat;
+  mask: var(--fc27-lock-closed) center / 14px 14px no-repeat;
+}

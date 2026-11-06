@@ -8,7 +8,8 @@ Not affiliated with or endorsed by Electronic Arts.
 ## Warning
 
 Some features automate the transfer market: the **Sniper**, the **Buy Now** shortcuts (G, H) that confirm the
-purchase themselves, and **Sort by BIN**, which runs many market searches. EA's User Agreement forbids automated
+purchase themselves, **SBC Auto fill**, which buys players and submits the challenge, and **Sort by BIN**, which
+runs many market searches. EA's User Agreement forbids automated
 use of the Web App. Heavy use can trigger EA's captcha check, a transfer market ban or an account ban. Use these
 features at your own risk.
 
@@ -28,6 +29,8 @@ To update, run `git pull` (or download the ZIP again), then click the reload ico
 
 ### Header
 
+![Header with the layout toggles, Rivals division, match stats and rank badges](docs/screenshots/header.png)
+
 - **Match stats** next to coins and FC Points:
   - **Rivals:** wins and losses this week.
   - **Champions:** wins and losses in the current stage, or "not entered" / "done".
@@ -43,6 +46,8 @@ The Web App only reports the current week or stage, so the totals and the Champi
 extension saw. Open the Web App after playing to keep them complete.
 
 ### Layout toggles
+
+![Club > Players in Grid mode, with a card locked for SBC](docs/screenshots/club-grid-lock.png)
 
 Two buttons in the header, remembered per browser profile:
 
@@ -77,6 +82,13 @@ Every player card shows, on its right edge, in the card's own colors:
   - The order stays when a player leaves the list (listed, quick sold, sent to the squad or the Transfer List).
   - Expect about 2 searches per player. Click again to stop.
 
+### Player locks
+
+- **Lock for SBC** at the top of the panel of a player you own (club or squad) keeps that card out of SBC Auto
+  fill. Click **Unlock for SBC** to allow it again.
+- Locked cards show a lock badge in club lists.
+- Locks are kept per card, in `chrome.storage.local`.
+
 ### Transfer List
 
 - Active Transfers come first; the other sections keep their order.
@@ -86,6 +98,55 @@ Every player card shows, on its right edge, in the card's own colors:
   - profit = sale price after the 5% tax minus what you paid;
   - a card from a pack or reward counts as paid 0.
 - EA does not return the paid price of a sold card. The extension remembers it while the card is listed, so a card sold before the extension saw it has no label.
+
+### SBC Auto fill
+
+<img src="docs/screenshots/sbc-auto-fill.png" width="350" alt="The Auto fill panel on Gold Re-Roll after Check prices">
+
+An **Auto fill** panel under the requirements of a one-click score SBC (for example Gold Re-Roll). It covers the
+score with your untradeable players first, then buys the cheapest mix of cards and submits the challenge. Any
+required score works, from Gold Re-Roll's 1,250 to 20,000 and more.
+
+| Column | Meaning |
+|---|---|
+| Rating | Every gold rating up to the challenge's OVR max, then Silver and Bronze |
+| Score | EA's score for a regular card of that rating |
+| Cheapest | Lowest Buy Now found by **Check prices**; "~" is an estimate from EA's market averages, "–" is unknown |
+| Per 1k | Coins per 1,000 score at the row's Max; the best value row is gold |
+| Max | Highest price paid for that rating. Check prices sets it one price step above the cheapest; type your own to override |
+| Tick | Allows buying that rating |
+
+| Setting | Meaning |
+|---|---|
+| Max coins per SBC | The plan stops when it needs more coins; empty means no limit |
+| Cost per extra card | Added per bought card when plans are compared, so fewer purchases win a close call (default 100) |
+| Use untradeable club players | Uses your fodder before buying |
+| Include special cards | Lets the fodder include special cards (off by default) |
+
+- **Check prices** searches the top allowed rating, the three best value ratings by estimate and Bronze (about 10
+  to 20 searches). Prices are kept for 30 minutes.
+- **Plan** shows which fodder is used and what is bought, with the most it can cost. It sends no market request.
+- **Buy & submit:**
+  - It buys the listings Check prices saw first. Then it searches up to 6 times, alternating the players seen at
+    that rating with the general search. EA cannot search by rating, so a general search shows a given rating
+    only by chance.
+  - It buys at most 5 cards at a time (Unassigned's limit), submits them with the fodder and plans again until the
+    challenge completes. EA keeps a partial score between submits.
+  - The reward pack stays unopened in **My Packs**.
+- **Fodder** is untradeable, rated at most the OVR max, not in the active squad, not locked for SBC, not on loan,
+  not limited-use, not in an evolution, and not special unless allowed.
+- **Stops:**
+  - It stops at the first refusal from EA and says where it stopped. A listing already sold is skipped.
+  - Players bought in a stopped run wait in Unassigned and are used first next time, also after a reload.
+  - After EA says "too many requests" (status 521 or 429), buying and Check prices pause for 60 minutes. Rounds
+    that need no buying still run.
+
+### My Packs
+
+![My Packs with the pack count and filter chips](docs/screenshots/my-packs.png)
+
+Store > Packs > My Packs gets a header with the number of packs and a filter chip per pack name, each with its
+count. A chip shows only that pack; **All** shows every pack again.
 
 ### Keyboard shortcuts
 
@@ -156,7 +217,10 @@ A panel above Reset and Search on Search the Transfer Market. It repeats the sea
 
 ## Data and permissions
 
-- `storage`: settings, shortcut keys, match history, paid prices and the players saved as not on market are kept in `chrome.storage.local` on this computer only.
+- `storage`: settings, shortcut keys, match history, paid prices, the players saved as not on market and the
+  locked cards are kept in `chrome.storage.local` on this computer only.
+- SBC Auto fill keeps its checked prices, the cooldown end time and the bought players waiting in Unassigned in
+  the page's `localStorage`.
 - `declarativeContent`: greys out the toolbar icon outside the Web App.
 - The scripts run only on `https://www.ea.com/ea-sports-fc/ultimate-team/web-app/*`. Most of them run in the page itself, so they can use the Web App's own services.
 
@@ -177,7 +241,11 @@ A panel above Reset and Search on Search the Transfer Market. It repeats the sea
 | `src/club-sort.js` | Sort by BIN |
 | `src/sniper.js` | Sniper and the Rating filter |
 | `src/transfer-list.js` | Transfer List profit labels |
+| `src/sbc-helper.js` | SBC Auto fill |
+| `src/player-lock.js` | Lock for SBC |
+| `src/store-packs.js` | My Packs count and filter |
 | `icons/` | Toolbar and extension icons |
+| `docs/screenshots/` | Images used in this README |
 
 The extension relies on the Web App's internal classes and page structure. An EA update to the Web App can break
 a feature until the code is adjusted.

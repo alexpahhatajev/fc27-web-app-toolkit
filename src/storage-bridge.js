@@ -7,6 +7,8 @@
 //        -> { source: "fc27-ext", id, paid } (price paid per item id, { [item id]: coins }).
 //           { source: "fc27-page", id, type: "offmarket:get" | "offmarket:merge", offMarket }
 //        -> { source: "fc27-ext", id, offMarket } (players without any listing, { [player id]: time seen }).
+//           { source: "fc27-page", id, type: "locks:get" | "locks:set", locks }
+//        -> { source: "fc27-ext", id, locks } (cards kept out of SBC Auto fill, { [item id]: { name, rating } }).
 (() => {
   const HISTORY_KEY = "matchHistory";
   const SHORTCUTS_KEY = "shortcuts";
@@ -14,6 +16,7 @@
   const PAID_LIMIT = 1000;
   const OFF_MARKET_KEY = "offMarket";
   const OFF_MARKET_DAYS = 7;
+  const LOCKS_KEY = "lockedPlayers";
 
   async function history(msg) {
     const stored = (await chrome.storage.local.get(HISTORY_KEY))[HISTORY_KEY] || {};
@@ -58,6 +61,11 @@
     return { offMarket: kept };
   }
 
+  async function locks(msg) {
+    if (msg.type === "locks:set") await chrome.storage.local.set({ [LOCKS_KEY]: msg.locks || {} });
+    return { locks: (await chrome.storage.local.get(LOCKS_KEY))[LOCKS_KEY] || {} };
+  }
+
   const handlers = {
     "history:get": history,
     "history:merge": history,
@@ -67,6 +75,8 @@
     "paid:merge": paid,
     "offmarket:get": offMarket,
     "offmarket:merge": offMarket,
+    "locks:get": locks,
+    "locks:set": locks,
   };
 
   window.addEventListener("message", async (event) => {
