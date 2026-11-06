@@ -74,6 +74,7 @@ Every player card shows, on its right edge, in the card's own colors:
 - **Sort by BIN** on Club > Players:
   - It checks the lowest Buy Now of every tradeable player, one at a time with pauses, then sorts them highest first.
   - Each card gets a price label.
+  - The order stays when a player leaves the list (listed, quick sold, sent to the squad or the Transfer List).
   - Expect about 2 searches per player. Click again to stop.
 
 ### Transfer List

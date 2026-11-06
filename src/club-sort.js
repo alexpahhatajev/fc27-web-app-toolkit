@@ -2,6 +2,8 @@
 // lowest Buy Now price of every tradeable player with the Lowest BIN check (price-check.js), one player after
 // another with a pause, then shows the club list with the most valuable tradeable players first. Untradeable
 // players and players without a price follow in the app's own order. Each checked card shows its price.
+// When a player leaves the sorted list (listed, sent to the squad, quick sold), the app rebuilds the list in its
+// own order; the BIN order is put back at once, on the same page.
 // Runs in the page world. A click while checking stops it; EA refusing a search stops it too.
 (() => {
   const BUTTON_CLASS = "fc27-club-sort";
@@ -9,6 +11,7 @@
   const PAUSE_MS = 2000;
   const prices = new Map(); // definitionId -> lowest Buy Now
   let controller = null;
+  let sortedModel = null; // the club list view model that holds the BIN order
   let checking = false;
   let stopRequested = false;
   let progress = "";
@@ -26,6 +29,24 @@
       if (this.searchCriteria && this.searchCriteria.type === SearchType.PLAYER) controller = this;
       return result;
     };
+
+    // removeItemsById is how the app takes a player out of the list; it re-sorts the rest by its own order.
+    let owner = UTClubViewModel.prototype;
+    while (owner && !Object.prototype.hasOwnProperty.call(owner, "removeItemsById")) owner = Object.getPrototypeOf(owner);
+    if (owner) {
+      const removeItemsById = owner.removeItemsById;
+      owner.removeItemsById = function () {
+        const result = removeItemsById.apply(this, arguments);
+        if (this === sortedModel) {
+          try {
+            keepOrder(this);
+          } catch (e) {
+            // Leave the app's order if its structure changed.
+          }
+        }
+        return result;
+      };
+    }
 
     // The price label is added to every row of a checked card; content.css shows it only in Club > Players.
     const render = UTItemTableCellView.prototype.render;
@@ -85,17 +106,30 @@
   }
 
   // Tradeable players first by price, highest first; the rest keep the order the app gave them.
+  function byPrice(items) {
+    const priced = items.filter((i) => i.tradable && prices.has(i.definitionId));
+    priced.sort((a, b) => prices.get(b.definitionId) - prices.get(a.definitionId));
+    return [...priced, ...items.filter((i) => !priced.includes(i))];
+  }
+
   function applySort(items) {
     const model = controller && controller.clubViewModel;
     if (!model) return;
-    const priced = items.filter((i) => i.tradable && prices.has(i.definitionId));
-    priced.sort((a, b) => prices.get(b.definitionId) - prices.get(a.definitionId));
-    const rest = items.filter((i) => !priced.includes(i));
-    model.resetCollection([...priced, ...rest]);
+    model.resetCollection(byPrice(items));
     // The list holds every club player, so the app must not load more and re-sort when the page changes.
     model.isFull = true;
     model.setIndex(0);
+    sortedModel = model;
     controller.refreshList();
+  }
+
+  // After a removal: the remaining players in BIN order again, on the page that was open.
+  function keepOrder(model) {
+    const index = model.getIndex();
+    model.resetCollection(byPrice(model.values().slice()));
+    model.isFull = true;
+    model.setIndex(Math.min(index, Math.max(0, model.length - 1)));
+    if (controller && controller.clubViewModel === model) controller.refreshList();
   }
 
   async function checkAll() {
