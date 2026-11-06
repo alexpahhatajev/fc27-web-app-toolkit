@@ -249,6 +249,85 @@ html.fc27-wide .ut-market-search-filters-view > .ut-content-container > .ut-cont
   max-height: calc(100% - 16px) !important;
 }
 
+/* Store > Packs in wide mode, every tab: the pack tiles in three columns of equal height, other blocks (the My
+   Packs header, notices) across the full width. */
+@media (min-width: 1281px) {
+  html.fc27-wide .ut-store-hub-view--content {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    /* The tiles clip their overflow, which would otherwise let the rows of this scrolling box shrink. */
+    grid-auto-rows: max-content;
+    align-content: start;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  html.fc27-wide .ut-store-hub-view--content > * {
+    grid-column: 1 / -1;
+  }
+
+  html.fc27-wide .ut-store-hub-view--content > :empty {
+    display: none;
+  }
+
+  html.fc27-wide .ut-store-hub-view--content > .ut-store-hub-view--disclaimer,
+  html.fc27-wide .ut-store-hub-view--content > .fc27-packs-bar {
+    width: auto;
+    margin: 0;
+  }
+
+  /* Pack tile: title, then picture and details side by side, then the buttons across the tile at its bottom
+     (beside the picture the coin price would not fit). Tiles hidden by the My Packs filter stay hidden. */
+  html.fc27-wide .ut-store-hub-view--content > .ut-store-pack-details-view:not(.fc27-pack-hidden) {
+    grid-column: auto;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto 1fr auto;
+    column-gap: 16px;
+    width: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  html.fc27-wide .ut-store-pack-details-view > .ut-store-pack-details-view--title {
+    grid-column: 1 / -1;
+    margin: 0;
+  }
+
+  html.fc27-wide .ut-store-pack-details-view > .ut-pack-graphic-view {
+    float: none;
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  html.fc27-wide .ut-store-pack-details-view > .ut-store-pack-details-view--content {
+    grid-column: 2;
+    grid-row: 2;
+    margin: 0;
+  }
+
+  html.fc27-wide .ut-store-pack-details-view > .ut-store-pack-details-view--footer {
+    grid-column: 1 / -1;
+    grid-row: 3;
+    margin: 16px 0 0;
+  }
+
+  /* Preview pack tile: the app's layout, with its button at the bottom of the tile. */
+  html.fc27-wide .ut-store-hub-view--content > .ut-store-xray-pack-details-view {
+    grid-column: auto;
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  html.fc27-wide .ut-store-xray-pack-details-view > .ut-store-xray-pack-details-view--footer {
+    flex: none;
+    margin-top: auto;
+  }
+}
+
 /* Grid and Wide toggles in the header (wide-mode.js). */
 .fc27-toggle {
   margin-right: 10px;

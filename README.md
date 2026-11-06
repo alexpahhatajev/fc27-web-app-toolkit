@@ -59,6 +59,7 @@ Two buttons in the header, remembered per browser profile:
   - Removes the app's width limits.
   - Squad cards grow to the largest size at which they don't overlap.
   - SBCs show in three columns.
+  - Store > Packs shows the packs in three columns, in every tab, with each tile's buttons along its bottom.
   - On Search the Transfer Market, the category tabs become icon buttons before the name field.
 
 ### Player cards
