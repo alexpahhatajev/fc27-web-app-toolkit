@@ -71,6 +71,8 @@ Every player card shows, on its right edge, in the card's own colors:
 
 ### Prices
 
+<img src="docs/screenshots/price-check.png" width="350" alt="The player panel after a Lowest BIN check (V)">
+
 - **Lowest BIN** button in the panel of any tradeable card:
   - It searches the market with a falling Buy Now cap until no cheaper listing is left. That takes at most 6 searches, and your own listings are ignored.
   - It shows the lowest Buy Now and how much you get after EA's 5% tax.
